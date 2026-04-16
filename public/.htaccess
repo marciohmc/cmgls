@@ -1,0 +1,18 @@
+# Proteção de segurança para servidores Apache (HostGator)
+
+# 1. Bloquear acesso à pasta .git e outros arquivos sensíveis
+RedirectMatch 404 /\.git
+RedirectMatch 404 /\.env
+RedirectMatch 404 /package\.json
+RedirectMatch 404 /package-lock\.json
+RedirectMatch 404 /tsconfig\.json
+
+# 2. Impedir listagem de diretórios
+Options -Indexes
+
+# 3. Configurações de Cache (Opcional, mas recomendado para performance)
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
