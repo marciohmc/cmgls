@@ -1,6 +1,5 @@
-# Configuração de Deployment Automatizado para HostGator (cPanel)
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/SEU_USUARIO_CPANEL/public_html
-    - /bin/cp -R dist/* $DEPLOYPATH
+    - export DEPLOYPATH=/home4/tiexpe48/public_html
+    - /bin/cp -r dist/* $DEPLOYPATH

@@ -340,20 +340,46 @@ export default function App() {
               </div>
 
               <div className="lg:col-span-3 p-12">
-                <form className="space-y-6">
+                <form 
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.currentTarget);
+                    const statusDiv = document.getElementById('form-status');
+                    
+                    try {
+                      if (statusDiv) statusDiv.innerText = 'Enviando...';
+                      const response = await fetch('/contact.php', {
+                        method: 'POST',
+                        body: formData
+                      });
+                      const result = await response.text();
+                      if (statusDiv) {
+                        statusDiv.innerText = result;
+                        statusDiv.className = response.ok ? 'mt-4 text-sm font-bold text-brand-accent' : 'mt-4 text-sm font-bold text-red-500';
+                      }
+                      if (response.ok) (e.target as HTMLFormElement).reset();
+                    } catch (error) {
+                      if (statusDiv) {
+                        statusDiv.innerText = 'Erro ao conectar com o servidor.';
+                        statusDiv.className = 'mt-4 text-sm font-bold text-red-500';
+                      }
+                    }
+                  }}
+                  className="space-y-6"
+                >
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Nome Completo</label>
-                      <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary outline-none transition-all" placeholder="Ex: João Silva" />
+                      <input name="name" required type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary outline-none transition-all" placeholder="Ex: João Silva" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-widest text-slate-500">E-mail Corporativo</label>
-                      <input type="email" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary outline-none transition-all" placeholder="nome@empresa.com.br" />
+                      <input name="email" required type="email" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary outline-none transition-all" placeholder="nome@empresa.com.br" />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Assunto</label>
-                    <select className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary outline-none transition-all">
+                    <select name="subject" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary outline-none transition-all">
                       <option>Engenharia Elétrica</option>
                       <option>Infraestrutura de Redes</option>
                       <option>Segurança Eletrônica</option>
@@ -362,11 +388,12 @@ export default function App() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-slate-500">Mensagem</label>
-                    <textarea rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary outline-none transition-all" placeholder="Como podemos ajudar no seu projeto?" />
+                    <textarea name="message" required rows={4} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary outline-none transition-all" placeholder="Como podemos ajudar no seu projeto?" />
                   </div>
-                  <button type="button" className="w-full bg-brand-secondary text-white font-black py-4 rounded-xl shadow-xl hover:bg-blue-600 transition-colors uppercase tracking-widest text-sm">
+                  <button type="submit" className="w-full bg-brand-secondary text-white font-black py-4 rounded-xl shadow-xl hover:bg-blue-600 transition-colors uppercase tracking-widest text-sm">
                     ENVIAR SOLICITAÇÃO
                   </button>
+                  <div id="form-status" className="mt-4 text-center text-sm"></div>
                 </form>
               </div>
             </div>
