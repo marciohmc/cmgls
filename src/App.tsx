@@ -32,7 +32,6 @@ import { motion, AnimatePresence } from 'motion/react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [logoLoaded, setLogoLoaded] = useState(false);
   
   const navLinks = [
     { name: 'Início', href: '#' },
@@ -44,49 +43,27 @@ const Navbar = () => {
   return (
     <nav className="fixed w-full z-50 bg-brand-primary/95 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-        <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <div className="flex items-center relative">
-            <img 
-              src="/logo.png" 
-              alt="C&M Global Services Logo" 
-              className={`h-12 w-auto brightness-0 invert object-contain transition-all duration-300 ${logoLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95 absolute'}`}
-              onLoad={(e) => {
-                // Só valida se a imagem tiver tamanho real (evita arquivos vazios de 0 bytes)
-                if (e.currentTarget.naturalWidth > 0) {
-                  setLogoLoaded(true);
-                }
-              }}
-              onError={() => setLogoLoaded(false)}
-            />
-            
-            {/* Fallback visível enquanto a logo não carrega 100% */}
-            {!logoLoaded && (
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 bg-brand-secondary rounded-lg flex items-center justify-center">
-                  <Cpu className="text-white w-6 h-6" />
-                </div>
-                <div className="flex flex-col text-white">
-                  <span className="font-bold text-xl leading-none">C&M GLOBAL</span>
-                  <span className="text-[10px] font-bold text-brand-secondary tracking-widest uppercase">Services</span>
-                </div>
-              </div>
-            )}
+        <a href="#" className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-brand-secondary rounded-lg flex items-center justify-center">
+            <Cpu className="text-white w-6 h-6" />
           </div>
-        </div>
+          <div className="flex flex-col text-white">
+            <span className="font-bold text-xl leading-none">C&M GLOBAL</span>
+            <span className="text-[10px] font-bold text-brand-secondary tracking-widest uppercase">Services</span>
+          </div>
+        </a>
 
-        {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map(link => (
-            <a key={link.name} href={link.href} className="text-sm font-medium text-slate-300 hover:text-brand-secondary transition-colors uppercase tracking-wider">
+            <a key={link.name} href={link.href} className="text-sm font-medium text-slate-300 hover:text-white transition-colors uppercase tracking-wider">
               {link.name}
             </a>
           ))}
-          <a href="#contato" className="bg-brand-secondary text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-600 transition-all shadow-lg shadow-brand-secondary/20">
+          <a href="#contato" className="bg-brand-secondary text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-600 transition-all shadow-lg shadow-brand-secondary/20 font-heading">
             ORÇAMENTO RÁPIDO
           </a>
         </div>
 
-        {/* Mobile Toggle */}
         <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
           {isOpen ? <X /> : <Menu />}
         </button>

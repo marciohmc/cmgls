@@ -12,7 +12,6 @@
   --color-brand-bg: #f8fafc;
   --color-brand-card: #ffffff;
   --color-brand-text: #334155;
-  --color-brand-text-light: #64748b;
   --color-brand-border: #e2e8f0;
 
   --shadow-sleek: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -24,11 +23,5 @@
   }
   h1, h2, h3, h4, .font-heading {
     @apply font-heading;
-  }
-}
-
-@layer base {
-  body {
-    @apply bg-brand-bg text-brand-text font-sans antialiased;
   }
 }
