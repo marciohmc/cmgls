@@ -32,6 +32,7 @@ import { motion, AnimatePresence } from 'motion/react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [logoLoaded, setLogoLoaded] = useState(false);
   
   const navLinks = [
     { name: 'Início', href: '#' },
@@ -41,32 +42,52 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+    <nav className="fixed w-full z-50 bg-brand-primary/95 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center">
-            <Cpu className="text-white w-6 h-6" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold text-xl text-brand-primary leading-none">C&M GLOBAL</span>
-            <span className="text-[10px] font-bold text-brand-secondary tracking-widest uppercase">Services</span>
+        <div className="flex items-center gap-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div className="flex items-center relative">
+            <img 
+              src="/logo.png" 
+              alt="C&M Global Services Logo" 
+              className={`h-12 w-auto brightness-0 invert object-contain transition-all duration-300 ${logoLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95 absolute'}`}
+              onLoad={(e) => {
+                // Só valida se a imagem tiver tamanho real (evita arquivos vazios de 0 bytes)
+                if (e.currentTarget.naturalWidth > 0) {
+                  setLogoLoaded(true);
+                }
+              }}
+              onError={() => setLogoLoaded(false)}
+            />
+            
+            {/* Fallback visível enquanto a logo não carrega 100% */}
+            {!logoLoaded && (
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 bg-brand-secondary rounded-lg flex items-center justify-center">
+                  <Cpu className="text-white w-6 h-6" />
+                </div>
+                <div className="flex flex-col text-white">
+                  <span className="font-bold text-xl leading-none">C&M GLOBAL</span>
+                  <span className="text-[10px] font-bold text-brand-secondary tracking-widest uppercase">Services</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map(link => (
-            <a key={link.name} href={link.href} className="text-sm font-medium text-slate-600 hover:text-brand-secondary transition-colors uppercase tracking-wider">
+            <a key={link.name} href={link.href} className="text-sm font-medium text-slate-300 hover:text-brand-secondary transition-colors uppercase tracking-wider">
               {link.name}
             </a>
           ))}
-          <a href="#contato" className="bg-brand-primary text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-brand-secondary/20">
+          <a href="#contato" className="bg-brand-secondary text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-blue-600 transition-all shadow-lg shadow-brand-secondary/20">
             ORÇAMENTO RÁPIDO
           </a>
         </div>
 
         {/* Mobile Toggle */}
-        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-brand-primary">
+        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -78,14 +99,14 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-20 left-0 w-full bg-white border-b border-slate-100 p-6 md:hidden flex flex-col gap-4 shadow-xl"
+            className="absolute top-20 left-0 w-full bg-brand-primary border-b border-white/10 p-6 md:hidden flex flex-col gap-4 shadow-xl"
           >
             {navLinks.map(link => (
-              <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="text-lg font-bold text-slate-800 border-b border-slate-50 pb-2">
+              <a key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="text-lg font-bold text-white border-b border-white/5 pb-2">
                 {link.name}
               </a>
             ))}
-            <a href="#contato" className="bg-brand-primary text-white px-6 py-4 rounded-xl text-center font-bold">
+            <a href="#contato" className="bg-brand-secondary text-white px-6 py-4 rounded-xl text-center font-bold">
               ORÇAMENTO RÁPIDO
             </a>
           </motion.div>
@@ -405,11 +426,22 @@ export default function App() {
       <footer className="bg-brand-primary pt-20 pb-10 text-white">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-2">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-brand-secondary rounded-lg flex items-center justify-center">
-                <Cpu className="text-white w-5 h-5" />
+            <div className="flex items-center gap-3 mb-6">
+              <img 
+                src="/logo.png" 
+                alt="C&M Global Services Logo" 
+                className="h-10 w-auto brightness-0 invert object-contain"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.parentElement?.querySelector('.footer-logo-fallback')?.classList.remove('hidden');
+                }}
+              />
+              <div className="footer-logo-fallback hidden flex items-center gap-2">
+                <div className="w-8 h-8 bg-brand-secondary rounded-lg flex items-center justify-center">
+                  <Cpu className="text-white w-5 h-5" />
+                </div>
+                <span className="font-bold text-xl uppercase">C&M GLOBAL</span>
               </div>
-              <span className="font-bold text-xl uppercase">C&M GLOBAL</span>
             </div>
             <p className="text-slate-400 text-sm max-w-sm mb-8 leading-relaxed">
               Líder em soluções de infraestrutura elétrica e digital. Atuamos com os mais altos padrões de segurança e tecnologia para garantir a continuidade do seu negócio.

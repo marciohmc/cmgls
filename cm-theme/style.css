@@ -1,0 +1,23 @@
+/*
+Theme Name: C&M Global Services Custom Theme
+Theme URI: https://cmglobalservices.com.br
+Author: Senior WP Developer
+Description: Tema personalizado focado em Engenharia e Infraestrutura Tecnológica.
+Version: 1.0.0
+Text Domain: cm-global
+*/
+
+:root {
+    --slate-dark: #0f172a;
+    --electric-blue: #3b82f6;
+    --ice-white: #f8fafc;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--ice-white);
+    color: var(--slate-dark);
+}
