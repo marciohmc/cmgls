@@ -12,6 +12,33 @@ function cm_global_setup() {
 }
 add_action('after_setup_theme', 'cm_global_setup');
 
+/**
+ * SEGURANÇA E LIMPEZA (HARDENING)
+ */
+
+// Remover versão do WordPress e links desnecessários do header
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'wlwmanifest_link');
+remove_action('wp_head', 'rsd_link');
+
+// Ocultar erros de login (Evita descoberta de usernames)
+add_filter('login_errors', function() {
+    return 'Erro: As credenciais informadas estão incorretas.';
+});
+
+// Desativar XML-RPC (Prevenção contra ataques de força bruta)
+add_filter('xmlrpc_enabled', '__return_false');
+
+// Remover links de REST API e oEmbed do header
+remove_action('wp_head', 'rest_output_link_wp_head', 10);
+remove_action('wp_head', 'wp_oembed_add_discovery_links', 10);
+
+// Desativar Emojis para limpar o fonte e melhorar a performance
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('admin_print_scripts', 'print_emoji_detection_script');
+remove_action('wp_print_styles', 'print_emoji_styles');
+remove_action('admin_print_styles', 'print_emoji_styles');
+
 function cm_global_scripts() {
     wp_enqueue_script('tailwind-cdn', 'https://cdn.tailwindcss.com', array(), null, false);
     wp_add_inline_script('tailwind-cdn', "
