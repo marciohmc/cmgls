@@ -46,12 +46,18 @@ function cm_global_scripts() {
             theme: {
                 extend: {
                     colors: {
-                        slate: { 900: '#0f172a', 800: '#1e293b' },
-                        blue: { 600: '#3b82f6' },
+                        brand: {
+                            primary: '#0f172a',
+                            secondary: '#3b82f6',
+                            accent: '#10b981',
+                        }
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         heading: ['Space Grotesk', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'sleek': '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
                     }
                 }
             }
